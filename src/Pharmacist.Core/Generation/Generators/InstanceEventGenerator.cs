@@ -50,7 +50,7 @@ namespace Pharmacist.Core.Generation.Generators
                 .WithLeadingTrivia(XmlSyntaxFactory.GenerateSummarySeeAlsoComment("A class that contains extension methods to wrap events for classes contained within the {0} namespace.", namespaceName))
                 .WithMembers(List<MemberDeclarationSyntax>(declarations.Select(declaration =>
                     {
-                        var eventsClassName = IdentifierName(declaration.Name + "Events");
+                        var eventsClassName = IdentifierName("Rx" + declaration.Name + "Events");
                         return MethodDeclaration(eventsClassName, Identifier("Events"))
                             .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
                             .WithParameterList(ParameterList(SingletonSeparatedList(
@@ -70,7 +70,7 @@ namespace Pharmacist.Core.Generation.Generators
         {
             const string dataParameterName = "data";
             var constructor = ConstructorDeclaration(
-                    Identifier(typeDefinition.Name + "Events"))
+                    Identifier("Rx" + typeDefinition.Name + "Events"))
                 .WithModifiers(
                     TokenList(
                         Token(SyntaxKind.PublicKeyword)))
@@ -106,7 +106,7 @@ namespace Pharmacist.Core.Generation.Generators
             var members = new List<MemberDeclarationSyntax> { GenerateEventWrapperField(typeDefinition), GenerateEventWrapperClassConstructor(typeDefinition, baseTypeDefinition != null) };
             members.AddRange(events.OrderBy(x => x.Name).Select(x => GenerateEventWrapperObservable(x, DataFieldName)).Where(x => x != null).Select(x => x!));
 
-            var classDeclaration = ClassDeclaration(typeDefinition.Name + "Events")
+            var classDeclaration = ClassDeclaration("Rx" + typeDefinition.Name + "Events")
                 .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
                 .WithMembers(List(members))
                 .WithObsoleteAttribute(typeDefinition)
@@ -114,7 +114,7 @@ namespace Pharmacist.Core.Generation.Generators
 
             if (baseTypeDefinition != null)
             {
-                classDeclaration = classDeclaration.WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName($"global::{baseTypeDefinition.Namespace}.{baseTypeDefinition.Name}Events")))));
+                classDeclaration = classDeclaration.WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName($"global::{baseTypeDefinition.Namespace}.Rx{baseTypeDefinition.Name}Events")))));
             }
 
             return classDeclaration;

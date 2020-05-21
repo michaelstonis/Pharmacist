@@ -11,13 +11,12 @@
     <PackageDescription>Produces from NuGet packages System.Reactive Observables for all events within the NuGet packages inside the project..</PackageDescription>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackBuildOutputs</TargetsForTfmSpecificContentInPackage>
     <NoWarn>$(NoWarn);CA1819</NoWarn>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Condition="'$(TargetFramework)' == 'net461' " Include="Microsoft.Build.Tasks.Core" Version="14.3" PrivateAssets="all" />
     <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0' " Include="Microsoft.Build.Tasks.Core" Version="15.1.548" PrivateAssets="all" />
-    
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup Label="Package">
@@ -36,6 +35,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Pharmacist.Core\Pharmacist.Core.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Pharmacist.Common\Pharmacist.Common.csproj" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>
